@@ -24,3 +24,4 @@ else:
     print("Http статус:", response.status_code, "(", response.reason, ")")
     sys.exit(1)
 
+
