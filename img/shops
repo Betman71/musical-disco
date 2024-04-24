@@ -1,0 +1,27 @@
+import os
+import sys
+import pygame
+import requests
+
+map_request = "https://static-maps.yandex.ru/1.x/?ll=37.623379,54.209958&z=15&size=450,450&l=map&pt=37.622426," \
+              "54.210137,pm2rdm~37.620704,54.210466,pm2rdm~37.623379,54.209958,pm2rdm"
+response = requests.get(map_request)
+
+if response:
+    map_file = "map.png"
+    with open(map_file, "wb") as file:
+        file.write(response.content)
+
+    pygame.init()
+    screen = pygame.display.set_mode((450, 450))
+    screen.blit(pygame.image.load(map_file), (0, 0))
+    pygame.display.flip()
+    while pygame.event.wait().type != pygame.QUIT:
+        pass
+    pygame.quit()
+    os.remove(map_file)
+else:
+    print("Ошибка выполнения запроса:")
+    print(map_request)
+    print("Http статус:", response.status_code, "(", response.reason, ")")
+    sys.exit(1)
